@@ -15,9 +15,6 @@ import java.util.Date;
 @Table(name = "heading")
 public class Position extends AbstractBaseEntity implements Serializable {
 
-    @Column(name="hex_ident", nullable=false)
-    private String hexIdent;
-
     @Column(name="timestamp", nullable=false)
     private Date timestamp;
 
@@ -43,15 +40,7 @@ public class Position extends AbstractBaseEntity implements Serializable {
     protected Position() {}
 
     public Position(String hexIdent, Date timestamp) {
-        this.hexIdent = hexIdent;
         this.timestamp = timestamp;
-    }
-
-    public String getHexIdent() {
-        return hexIdent;
-    }
-    public void setHexIdent(String hexIdent) {
-        this.hexIdent = hexIdent;
     }
 
     public Date getTimestamp() {

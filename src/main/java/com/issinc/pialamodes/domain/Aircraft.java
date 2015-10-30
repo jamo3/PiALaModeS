@@ -14,9 +14,6 @@ import java.io.Serializable;
 @Table(name = "aircraft")
 public class Aircraft extends AbstractBaseEntity implements Serializable {
 
-    @Column(name="hex_ident", nullable=false)
-    private String hexIdent;
-
     @Column(name="tail_number", nullable=false)
     private String tailNumber;
 
@@ -29,16 +26,9 @@ public class Aircraft extends AbstractBaseEntity implements Serializable {
 
     protected Aircraft() {}
 
-    public Aircraft(String hexIdent, String tailNumber) {
-        this.hexIdent = hexIdent;
+    public Aircraft(String tailNumber, String type) {
         this.tailNumber = tailNumber;
-    }
-
-    public String getHexIdent() {
-        return hexIdent;
-    }
-    public void setHexIdent(String hexIdent) {
-        this.hexIdent = hexIdent;
+        this.type = type;
     }
 
     public String getTailNumber() {

@@ -18,9 +18,6 @@ import java.util.Date;
 @Table(name = "callsign")
 public class Callsign extends AbstractBaseEntity implements Serializable {
 
-    @Column(name="hex_ident", nullable=false)
-    private String hexIdent;
-
     @Column(name="timestamp", nullable=false)
     private Date timestamp;
 
@@ -34,17 +31,9 @@ public class Callsign extends AbstractBaseEntity implements Serializable {
 
     protected Callsign() {}
 
-    public Callsign(String hexIdent, String callsign, Date timestamp) {
-        this.hexIdent = hexIdent;
+    public Callsign(String callsign, Date timestamp) {
         this.callsign = callsign;
         this.timestamp = timestamp;
-    }
-
-    public String getHexIdent() {
-        return hexIdent;
-    }
-    public void setHexIdent(String hexIdent) {
-        this.hexIdent = hexIdent;
     }
 
     public String getCallsign() {
