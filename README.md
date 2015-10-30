@@ -1,2 +1,2 @@
 # PiALaModeS
-iss 2015 hackathon project code for the Pi a la mode team
+ISS 2015 Hackathon project code for the **Pi a la Mode** team
