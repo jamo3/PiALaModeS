@@ -1,3 +1,18 @@
+# common directories
+target/
+
+# idea files and directories
+*.iml
+.idea/
+
+# eclipse files and directories
+.classpath
+.settings
+.project
+.metadata/
+.recommenders/
+
+# java
 *.class
 
 # Mobile Tools for Java (J2ME)
