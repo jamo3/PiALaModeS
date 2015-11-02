@@ -1,7 +1,6 @@
 package com.issinc.pialamodes.rest;
 
 import com.issinc.pialamodes.domain.Aircraft;
-import com.issinc.pialamodes.service.AircraftService;
 import com.issinc.pialamodes.service.IAircraftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
