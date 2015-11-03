@@ -1,9 +1,8 @@
 package com.issinc.pialamodes.rest;
 
 import com.issinc.pialamodes.ServerApplication;
-import com.issinc.pialamodes.domain.Aircraft;
-import com.issinc.pialamodes.persistence.AircraftRepository;
-import com.issinc.pialamodes.service.IAircraftService;
+import com.issinc.pialamodes.persistence.CallsignRepository;
+import com.issinc.pialamodes.service.ICallsignService;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import junit.framework.TestCase;
@@ -32,12 +31,12 @@ import static org.hamcrest.Matchers.hasItems;
 @SpringApplicationConfiguration(classes = ServerApplication.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public class AircraftControllerTest extends TestCase {
+public class CallsignControllerTest extends TestCase {
 
     @Autowired
-    IAircraftService service;
+    ICallsignService service;
     @Autowired
-    AircraftRepository repo;
+    CallsignRepository repo;
 
     @Value("${local.server.port}")
     int port;
@@ -46,50 +45,44 @@ public class AircraftControllerTest extends TestCase {
     public void setUp() {
         RestAssured.port = port;
         repo.deleteAll();
-        Aircraft plane1 = new Aircraft("tail-1", "piper-cub");
-        service.create(plane1);
+        service.create("tango-100");
     }
 
     @Test
-    public void testCreateAircraftJson() throws Exception {
+    public void testCreateCallsign() throws Exception {
 
-        JSONObject aircraft1 = new JSONObject();
-        aircraft1.put("tailNumber", "tail-2");
-        aircraft1.put("type", "learjet x39");
-        String jsonString = aircraft1.toString();
+        JSONObject callsign1 = new JSONObject();
+        callsign1.put("callsign", "alpha-300");
+        String jsonString = callsign1.toString();
 
         given().
             contentType("application/json").
             body(jsonString).
         when().
-            post("/aircraft").
+            post("/callsign").
         then().
             statusCode(HttpStatus.SC_OK).
             contentType(ContentType.JSON).
-            body("tailNumber", equalTo("tail-2")).    // single json object returned
-            body("type", equalTo("learjet x39"));
+            body("callsign", equalTo("alpha-300"));    // single json object returned
     }
 
     @Test
     public void canFetchAll() {
         when().
-            get("/aircraft").
+            get("/callsign").
         then().
             statusCode(HttpStatus.SC_OK).
             contentType(ContentType.JSON).
-            body("tailNumber", hasItems("tail-1"));
+            body("callsign", hasItems("tango-100"));
     }
 
     @Test
     public void canFetchOne() {
         when().
-            get("/aircraft/tail-1").
+            get("/callsign/tango-100").
         then().
             statusCode(HttpStatus.SC_OK).
             contentType(ContentType.JSON).
-            body("tailNumber", equalTo("tail-1")).    // single json object returned
-            body("type", equalTo("piper-cub"));
+            body("callsign", equalTo("tango-100"));    // single json object returned
     }
-
-
 }

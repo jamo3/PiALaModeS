@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CallsignRepository extends JpaRepository<Callsign, String> {
 
+    Callsign findByCallsign(String callsign);
 }

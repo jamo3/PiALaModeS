@@ -13,10 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 /**
  *  Created by jay.moss on 10/30/2015.
  */
@@ -46,6 +42,7 @@ public class AircraftServiceTest extends TestCase {
         assertEquals("type should match", src.getType(), ret.getType());
     }
 
+    @Test
     public void testCreate1() throws Exception {
         Aircraft ret = service.create("tail-3", "piper-peter");
         assertNotNull("Retrieved Object should not be null", ret);
@@ -54,12 +51,14 @@ public class AircraftServiceTest extends TestCase {
         assertEquals("type should match", "piper-peter", ret.getType());
     }
 
+    @Test
     public void testFind() throws Exception {
         List<Aircraft> dbList = service.find();
         assertNotNull("Retrieved Object List should not be null", dbList);
         assertTrue("Should find one object", dbList.size() == 1);
     }
 
+    @Test
     public void testFindByTailNumber() throws Exception {
         Aircraft ret = service.findByTailNumber("tail-1");
         assertNotNull("Retrieved Object should not be null", ret);

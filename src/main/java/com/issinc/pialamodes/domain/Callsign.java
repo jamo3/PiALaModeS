@@ -31,9 +31,9 @@ public class Callsign extends AbstractBaseEntity implements Serializable {
 
     protected Callsign() {}
 
-    public Callsign(String callsign, Date timestamp) {
+    public Callsign(String callsign) {
         this.callsign = callsign;
-        this.timestamp = timestamp;
+        this.timestamp = new Date();
     }
 
     public String getCallsign() {
