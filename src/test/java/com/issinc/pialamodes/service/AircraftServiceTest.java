@@ -28,25 +28,25 @@ public class AircraftServiceTest extends TestCase {
     @Before
     public void setUp() {
         repo.deleteAll();
-        Aircraft plane1 = new Aircraft("tail-1", "piper-cub");
+        Aircraft plane1 = new Aircraft("abc123", "tail-1", "piper-cub");
         service.create(plane1);
     }
 
     @Test
     public void testCreate() throws Exception {
-        Aircraft src = new Aircraft("tail-2", "piper-bear");
+        Aircraft src = new Aircraft("def456", "tail-2", "piper-bear");
         Aircraft ret = service.create(src);
         assertNotNull("Retrieved Object should not be null", ret);
-        assertNotNull("Retrieved Object Id should not be null", ret.getId());
+        assertEquals("hexIdent should match", src.getHexIdent(), ret.getHexIdent());
         assertEquals("tailNumber should match", src.getTailNumber(), ret.getTailNumber());
         assertEquals("type should match", src.getType(), ret.getType());
     }
 
     @Test
     public void testCreate1() throws Exception {
-        Aircraft ret = service.create("tail-3", "piper-peter");
+        Aircraft ret = service.create("ghi789", "tail-3", "piper-peter");
         assertNotNull("Retrieved Object should not be null", ret);
-        assertNotNull("Retrieved Object Id should not be null", ret.getId());
+        assertEquals("hexIdent should match", "ghi789", ret.getHexIdent());
         assertEquals("tailNumber should match", "tail-3", ret.getTailNumber());
         assertEquals("type should match", "piper-peter", ret.getType());
     }
@@ -62,6 +62,7 @@ public class AircraftServiceTest extends TestCase {
     public void testFindByTailNumber() throws Exception {
         Aircraft ret = service.findByTailNumber("tail-1");
         assertNotNull("Retrieved Object should not be null", ret);
+        assertEquals("hexIdent should match", "abc123", ret.getHexIdent());
         assertEquals("tailNumber should match", "tail-1", ret.getTailNumber());
         assertEquals("type should match", "piper-cub", ret.getType());
     }

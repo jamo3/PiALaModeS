@@ -2,45 +2,47 @@ package com.issinc.pialamodes.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 
 @Entity
-@Table(name = "heading")
-public class Position extends AbstractBaseEntity implements Serializable {
+@Table(name = "position")
+@EntityListeners({AuditingEntityListener.class})
+public class Position extends AbstractHexIdentEntity implements Serializable {
 
     @Column(name="timestamp", nullable=false)
     private Date timestamp;
 
     @Column(name="heading")
-    private String heading;
+    private Double heading;
 
     @Column(name="lat")
-    private String lat;
+    private Double lat;
 
     @Column(name="lon")
-    private String lon;
+    private Double lon;
 
     @Column(name="ground_speed")
-    private String groundSpeed;
+    private Double groundSpeed;
 
     @Column(name="vertical_rate")
-    private String verticalRate;
+    private Double verticalRate;
 
     @JsonIgnore
     @Version
     private long version;
 
-    protected Position() {}
-
-    public Position(String hexIdent, Date timestamp) {
-        this.timestamp = timestamp;
+    public Position(String hexIdent, Double lat, Double lon, Double groundSpeed, Double verticalRate) {
+        super(hexIdent);
+        this.timestamp = new Date();    // always now for a new object
+        this.lat = lat;
+        this.lon = lon;
+        this.groundSpeed = groundSpeed;
+        this.verticalRate = verticalRate;
     }
 
     public Date getTimestamp() {
@@ -50,38 +52,38 @@ public class Position extends AbstractBaseEntity implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public String getHeading() {
+    public Double getHeading() {
         return heading;
     }
-    public void setHeading(String heading) {
+    public void setHeading(Double heading) {
         this.heading = heading;
     }
 
-    public String getLat() {
+    public Double getLat() {
         return lat;
     }
-    public void setLat(String lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public String getLon() {
+    public Double getLon() {
         return lon;
     }
-    public void setLon(String lon) {
+    public void setLon(Double lon) {
         this.lon = lon;
     }
 
-    public String getGroundSpeed() {
+    public Double getGroundSpeed() {
         return groundSpeed;
     }
-    public void setGroundSpeed(String groundSpeed) {
+    public void setGroundSpeed(Double groundSpeed) {
         this.groundSpeed = groundSpeed;
     }
 
-    public String getVerticalRate() {
+    public Double getVerticalRate() {
         return verticalRate;
     }
-    public void setVerticalRate(String verticalRate) {
+    public void setVerticalRate(Double verticalRate) {
         this.verticalRate = verticalRate;
     }
 

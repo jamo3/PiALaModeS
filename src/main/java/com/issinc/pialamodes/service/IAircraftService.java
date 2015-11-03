@@ -10,7 +10,7 @@ import java.util.List;
 public interface IAircraftService {
 
     Aircraft create(Aircraft aircraft);
-    Aircraft create(String tailNumber, String type);
+    Aircraft create(String hexIdent, String tailNumber, String type);
 
     List<Aircraft> find();
     Aircraft findByTailNumber(String tailNumber);

@@ -2,11 +2,10 @@ package com.issinc.pialamodes.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,24 +15,27 @@ import java.util.Date;
 
 @Entity
 @Table(name = "callsign")
-public class Callsign extends AbstractBaseEntity implements Serializable {
-
-    @Column(name="timestamp", nullable=false)
-    private Date timestamp;
+@EntityListeners({AuditingEntityListener.class})
+public class Callsign extends AbstractHexIdentEntity implements Serializable {
 
     @Column(name="callsign", nullable=false)
     private String callsign;
 
+    @LastModifiedDate
+    @Column(name="last_modified_date")
+    private Date lastModifiedDate;
 
     @JsonIgnore
     @Version
     private long version;
 
-    protected Callsign() {}
+    protected Callsign() {  // required for jpa, do not use
+        super();
+    }
 
-    public Callsign(String callsign) {
+    public Callsign(String hexIdent, String callsign) {
+        super(hexIdent);
         this.callsign = callsign;
-        this.timestamp = new Date();
     }
 
     public String getCallsign() {
@@ -43,11 +45,11 @@ public class Callsign extends AbstractBaseEntity implements Serializable {
         this.callsign = callsign;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
     }
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override

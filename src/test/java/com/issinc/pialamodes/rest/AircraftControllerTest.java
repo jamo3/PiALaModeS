@@ -46,7 +46,7 @@ public class AircraftControllerTest extends TestCase {
     public void setUp() {
         RestAssured.port = port;
         repo.deleteAll();
-        Aircraft plane1 = new Aircraft("tail-1", "piper-cub");
+        Aircraft plane1 = new Aircraft("abc123", "tail-1", "piper-cub");
         service.create(plane1);
     }
 
@@ -54,6 +54,7 @@ public class AircraftControllerTest extends TestCase {
     public void testCreateAircraftJson() throws Exception {
 
         JSONObject aircraft1 = new JSONObject();
+        aircraft1.put("hexIdent", "def456");
         aircraft1.put("tailNumber", "tail-2");
         aircraft1.put("type", "learjet x39");
         String jsonString = aircraft1.toString();
@@ -66,6 +67,7 @@ public class AircraftControllerTest extends TestCase {
         then().
             statusCode(HttpStatus.SC_OK).
             contentType(ContentType.JSON).
+            body("hexIdent", equalTo("def456")).    // single json object returned
             body("tailNumber", equalTo("tail-2")).    // single json object returned
             body("type", equalTo("learjet x39"));
     }

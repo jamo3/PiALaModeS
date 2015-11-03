@@ -26,12 +26,26 @@ public class CallsignService implements ICallsignService  {
 
     @Override
     @Transactional
-    public Callsign create(String callsign) {
+    public Callsign create(Callsign callsign) {
         Callsign result;
-        result = callsignRepo.save(new Callsign(callsign));
+
+        Callsign existing = callsignRepo.findOne(callsign.getHexIdent());
+        if (existing != null) {
+            result = existing;
+        }
+        else {
+            result = callsignRepo.save(callsign);
+        }
         return result;
     }
 
+    @Override
+    @Transactional
+    public Callsign create(String hexIdent, String callsign) {
+        Callsign result;
+        result = callsignRepo.save(new Callsign(hexIdent, callsign));
+        return result;
+    }
 
     @Override
     @Transactional

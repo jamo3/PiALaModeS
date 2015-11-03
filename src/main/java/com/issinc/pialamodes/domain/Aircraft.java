@@ -3,7 +3,10 @@ package com.issinc.pialamodes.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Version;
 import java.io.Serializable;
 
 /**
@@ -12,7 +15,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "aircraft")
-public class Aircraft extends AbstractBaseEntity implements Serializable {
+public class Aircraft extends AbstractHexIdentEntity implements Serializable {
 
     @Column(name="tail_number", nullable=false)
     private String tailNumber;
@@ -24,9 +27,12 @@ public class Aircraft extends AbstractBaseEntity implements Serializable {
     @Version
     private long version;
 
-    protected Aircraft() {}
+    protected Aircraft() {  // required for jpa, do not use
+        super();
+    }
 
-    public Aircraft(String tailNumber, String type) {
+    public Aircraft(String hexIdent, String tailNumber, String type) {
+        super(hexIdent);
         this.tailNumber = tailNumber;
         this.type = type;
     }

@@ -36,7 +36,7 @@ public class CallsignController {
         produces=APPLICATION_JSON_VALUE)
     public ResponseEntity<Callsign> createConfigJson(@RequestBody Callsign newCallsign) {
 
-        Callsign callsign = callsignService.create(newCallsign.getCallsign());
+        Callsign callsign = callsignService.create(newCallsign);
         return ResponseEntity.ok().body(callsign);
     }
 

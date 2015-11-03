@@ -20,8 +20,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.*;
 
 /**
  *  Created by jay.moss on 11/2/2015.
@@ -45,13 +44,14 @@ public class CallsignControllerTest extends TestCase {
     public void setUp() {
         RestAssured.port = port;
         repo.deleteAll();
-        service.create("tango-100");
+        service.create("abc123", "tango-100");
     }
 
     @Test
     public void testCreateCallsign() throws Exception {
 
         JSONObject callsign1 = new JSONObject();
+        callsign1.put("hexIdent", "def456");
         callsign1.put("callsign", "alpha-300");
         String jsonString = callsign1.toString();
 
@@ -63,6 +63,8 @@ public class CallsignControllerTest extends TestCase {
         then().
             statusCode(HttpStatus.SC_OK).
             contentType(ContentType.JSON).
+            body("hexIdent", equalTo("def456")).
+            body("lastModifiedDate", notNullValue()).
             body("callsign", equalTo("alpha-300"));    // single json object returned
     }
 

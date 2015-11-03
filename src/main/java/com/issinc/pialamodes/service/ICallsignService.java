@@ -9,7 +9,8 @@ import java.util.List;
  */
 public interface ICallsignService {
 
-    Callsign create(String callsign);
+    Callsign create(Callsign callsign);
+    Callsign create(String hexIdent, String callsign);
 
     List<Callsign> find();
     Callsign findByCallsign(String callsign);

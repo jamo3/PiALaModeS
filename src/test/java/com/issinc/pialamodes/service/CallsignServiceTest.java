@@ -28,17 +28,27 @@ public class CallsignServiceTest extends TestCase {
     @Before
     public void setUp() {
         repo.deleteAll();
-        Callsign w100 = new Callsign("whiskey-100");
-        service.create("whiskey-100");
+        Callsign w100 = new Callsign("abc123", "whiskey-100");
+        service.create("abc123", "whiskey-100");
+    }
+
+    @Test
+    public void testCreateObj() throws Exception {
+        Callsign src = new Callsign("def456", "tail-2");
+        Callsign ret = service.create(src);
+        assertNotNull("Retrieved Object should not be null", ret);
+        assertEquals("hexIdent should match", src.getHexIdent(), ret.getHexIdent());
+        assertEquals("tailNumber should match", src.getCallsign(), ret.getCallsign());
+        assertNotNull("timestamp should not be null", ret.getLastModifiedDate());
     }
 
     @Test
     public void testCreate() throws Exception {
-        Callsign ret = service.create("bravo-200");
+        Callsign ret = service.create("ghi789", "bravo-200");
         assertNotNull("Retrieved Object should not be null", ret);
-        assertNotNull("Retrieved Object Id should not be null", ret.getId());
-        assertNotNull("timestamp should not be null", ret.getTimestamp());
+        assertEquals("hexIdent should match", "ghi789", ret.getHexIdent());
         assertEquals("callsign should match", "bravo-200", ret.getCallsign());
+        assertNotNull("timestamp should not be null", ret.getLastModifiedDate());
     }
 
     @Test
@@ -52,7 +62,8 @@ public class CallsignServiceTest extends TestCase {
     public void testFindByCallsign() throws Exception {
         Callsign ret = service.findByCallsign("whiskey-100");
         assertNotNull("Retrieved Object should not be null", ret);
-        assertNotNull("timestamp should not be null", ret.getTimestamp());
+        assertEquals("hexIdent should match", "abc123", ret.getHexIdent());
         assertEquals("callsign should match", "whiskey-100", ret.getCallsign());
+        assertNotNull("timestamp should not be null", ret.getLastModifiedDate());
     }
 }

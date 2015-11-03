@@ -29,9 +29,9 @@ public class AircraftService implements IAircraftService  {
     public Aircraft create(Aircraft aircraft) {
         Aircraft result;
 
-        Aircraft existing = aircraftRepo.findByTailNumber(aircraft.getTailNumber());
+        Aircraft existing = aircraftRepo.findOne(aircraft.getHexIdent());
         if (existing != null) {
-            log.warn("attempted insert of existing aircraft, tailNumber: " + aircraft.getTailNumber());
+            log.warn("attempted insert of existing aircraft, hexIdent: " + aircraft.getHexIdent());
             result = existing;
         }
         else {
@@ -41,15 +41,15 @@ public class AircraftService implements IAircraftService  {
     }
 
     @Override
-    public Aircraft create(String tailNumber, String type) {
+    public Aircraft create(String hexIdent, String tailNumber, String type) {
         Aircraft result;
-        Aircraft existing = aircraftRepo.findByTailNumber(tailNumber);
+        Aircraft existing = aircraftRepo.findOne(hexIdent);
         if (existing != null) {
-            log.warn("attempted insert of existing aircraft, tailNumber: " + tailNumber);
+            log.warn("attempted insert of existing aircraft, hexIdent: " + hexIdent);
             result = existing;
         }
         else {
-            Aircraft aircraft = new Aircraft(tailNumber, type);
+            Aircraft aircraft = new Aircraft(hexIdent, tailNumber, type);
             result = aircraftRepo.save(aircraft);
         }
         return result;
