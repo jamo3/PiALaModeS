@@ -66,4 +66,11 @@ public class AircraftService implements IAircraftService  {
     public Aircraft findByTailNumber(String tailNumber) {
         return aircraftRepo.findByTailNumber(tailNumber);
     }
+
+    @Override
+    @Transactional
+    public Aircraft findByHexIdent(String hexIdent) {
+        return aircraftRepo.findOne(hexIdent);
+    }
+
 }

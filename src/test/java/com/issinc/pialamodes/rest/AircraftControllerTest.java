@@ -9,6 +9,7 @@ import com.jayway.restassured.http.ContentType;
 import junit.framework.TestCase;
 import org.apache.http.HttpStatus;
 import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,9 +46,13 @@ public class AircraftControllerTest extends TestCase {
     @Before
     public void setUp() {
         RestAssured.port = port;
-        repo.deleteAll();
         Aircraft plane1 = new Aircraft("abc123", "tail-1", "piper-cub");
         service.create(plane1);
+    }
+
+    @After
+    public void cleanUp() {
+        repo.delete("abc123");
     }
 
     @Test
@@ -70,6 +75,8 @@ public class AircraftControllerTest extends TestCase {
             body("hexIdent", equalTo("def456")).    // single json object returned
             body("tailNumber", equalTo("tail-2")).    // single json object returned
             body("type", equalTo("learjet x39"));
+
+        repo.delete("def456");
     }
 
     @Test
@@ -83,9 +90,9 @@ public class AircraftControllerTest extends TestCase {
     }
 
     @Test
-    public void canFetchOne() {
+    public void canFetchByHexIdent() {
         when().
-            get("/aircraft/tail-1").
+            get("/aircraft/abc123").
         then().
             statusCode(HttpStatus.SC_OK).
             contentType(ContentType.JSON).

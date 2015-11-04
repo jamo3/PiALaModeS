@@ -50,11 +50,11 @@ public class AircraftController {
     }
 
     // http get request to find a specific dashboard record
-    @RequestMapping(method=GET, value="/{tailNumber}",
+    @RequestMapping(method=GET, value="/{hexIdent}",
         produces=APPLICATION_JSON_VALUE)
-    public ResponseEntity<Aircraft> findByName(@PathVariable("tailNumber") String tailNumber) {
+    public ResponseEntity<Aircraft> findById(@PathVariable("hexIdent") String hexIdent) {
 
-        Aircraft aircraft = aircraftService.findByTailNumber(tailNumber);
+        Aircraft aircraft = aircraftService.findByHexIdent(hexIdent);
         return ResponseEntity.ok().body(aircraft);
     }
 

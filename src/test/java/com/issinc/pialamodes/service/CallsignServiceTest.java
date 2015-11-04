@@ -4,6 +4,7 @@ import com.issinc.pialamodes.ServerApplication;
 import com.issinc.pialamodes.domain.Callsign;
 import com.issinc.pialamodes.persistence.CallsignRepository;
 import junit.framework.TestCase;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +28,13 @@ public class CallsignServiceTest extends TestCase {
 
     @Before
     public void setUp() {
-        repo.deleteAll();
         Callsign w100 = new Callsign("abc123", "whiskey-100");
         service.create("abc123", "whiskey-100");
+    }
+
+    @After
+    public void cleanUp() {
+        repo.delete("abc123");
     }
 
     @Test
@@ -40,6 +45,7 @@ public class CallsignServiceTest extends TestCase {
         assertEquals("hexIdent should match", src.getHexIdent(), ret.getHexIdent());
         assertEquals("tailNumber should match", src.getCallsign(), ret.getCallsign());
         assertNotNull("timestamp should not be null", ret.getLastModifiedDate());
+        repo.delete("def456");
     }
 
     @Test
@@ -49,6 +55,7 @@ public class CallsignServiceTest extends TestCase {
         assertEquals("hexIdent should match", "ghi789", ret.getHexIdent());
         assertEquals("callsign should match", "bravo-200", ret.getCallsign());
         assertNotNull("timestamp should not be null", ret.getLastModifiedDate());
+        repo.delete("ghi789");
     }
 
     @Test

@@ -8,6 +8,7 @@ import com.jayway.restassured.http.ContentType;
 import junit.framework.TestCase;
 import org.apache.http.HttpStatus;
 import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,8 +44,12 @@ public class CallsignControllerTest extends TestCase {
     @Before
     public void setUp() {
         RestAssured.port = port;
-        repo.deleteAll();
         service.create("abc123", "tango-100");
+    }
+
+    @After
+    public void cleanUp() {
+        repo.delete("abc123");
     }
 
     @Test
@@ -66,6 +71,7 @@ public class CallsignControllerTest extends TestCase {
             body("hexIdent", equalTo("def456")).
             body("lastModifiedDate", notNullValue()).
             body("callsign", equalTo("alpha-300"));    // single json object returned
+        repo.delete("def456");
     }
 
     @Test

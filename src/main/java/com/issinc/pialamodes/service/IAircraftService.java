@@ -14,5 +14,5 @@ public interface IAircraftService {
 
     List<Aircraft> find();
     Aircraft findByTailNumber(String tailNumber);
-
+    Aircraft findByHexIdent(String hexIdent);
 }

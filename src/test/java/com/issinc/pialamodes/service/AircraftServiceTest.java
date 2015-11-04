@@ -4,6 +4,7 @@ import com.issinc.pialamodes.ServerApplication;
 import com.issinc.pialamodes.domain.Aircraft;
 import com.issinc.pialamodes.persistence.AircraftRepository;
 import junit.framework.TestCase;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,9 +28,13 @@ public class AircraftServiceTest extends TestCase {
 
     @Before
     public void setUp() {
-        repo.deleteAll();
         Aircraft plane1 = new Aircraft("abc123", "tail-1", "piper-cub");
         service.create(plane1);
+    }
+
+    @After
+    public void cleanUp() {
+        repo.delete("abc123");
     }
 
     @Test
@@ -40,6 +45,7 @@ public class AircraftServiceTest extends TestCase {
         assertEquals("hexIdent should match", src.getHexIdent(), ret.getHexIdent());
         assertEquals("tailNumber should match", src.getTailNumber(), ret.getTailNumber());
         assertEquals("type should match", src.getType(), ret.getType());
+        repo.delete("def456");
     }
 
     @Test
@@ -49,6 +55,7 @@ public class AircraftServiceTest extends TestCase {
         assertEquals("hexIdent should match", "ghi789", ret.getHexIdent());
         assertEquals("tailNumber should match", "tail-3", ret.getTailNumber());
         assertEquals("type should match", "piper-peter", ret.getType());
+        repo.delete("ghi789");
     }
 
     @Test
