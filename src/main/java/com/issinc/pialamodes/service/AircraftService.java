@@ -43,6 +43,7 @@ public class AircraftService implements IAircraftService  {
     @Override
     public Aircraft create(String hexIdent, String tailNumber, String type) {
         Aircraft result;
+
         Aircraft existing = aircraftRepo.findOne(hexIdent);
         if (existing != null) {
             log.warn("attempted insert of existing aircraft, hexIdent: " + hexIdent);

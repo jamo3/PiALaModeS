@@ -12,10 +12,10 @@ import java.util.Date;
 @Entity
 @Table(name = "position")
 @EntityListeners({AuditingEntityListener.class})
-public class Position extends AbstractHexIdentEntity implements Serializable {
+public class Position implements Serializable {
 
-    @Column(name="timestamp", nullable=false)
-    private Date timestamp;
+    @EmbeddedId
+    private PositionId positionId;
 
     @Column(name="heading")
     private Double heading;
@@ -36,21 +36,29 @@ public class Position extends AbstractHexIdentEntity implements Serializable {
     @Version
     private long version;
 
-    public Position(String hexIdent, Double lat, Double lon, Double groundSpeed, Double verticalRate) {
-        super(hexIdent);
-        this.timestamp = new Date();    // always now for a new object
+    protected Position() {    // required for spring jpa
+        super();
+    }
+
+    public Position(String hexIdent, Double lat, Double lon, Double heading, Double groundSpeed, Double verticalRate) {
+        this.positionId = new PositionId(hexIdent);
         this.lat = lat;
         this.lon = lon;
+        this.heading = heading;
         this.groundSpeed = groundSpeed;
         this.verticalRate = verticalRate;
     }
 
+    public String getHexIdent() {
+        return positionId.getHexIdent();
+    }
+
     public Date getTimestamp() {
-        return timestamp;
+        return positionId.getTimestamp();
     }
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
+//    public void setTimestamp(Date timestamp) {
+//        this.timestamp = timestamp;
+//    }
 
     public Double getHeading() {
         return heading;
@@ -90,5 +98,21 @@ public class Position extends AbstractHexIdentEntity implements Serializable {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Position position = (Position) o;
+
+        return positionId.equals(position.positionId);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return positionId.hashCode();
     }
 }
