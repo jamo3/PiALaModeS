@@ -1,7 +1,6 @@
 package com.issinc.pialamodes.service;
 
 import com.issinc.pialamodes.domain.Position;
-import com.issinc.pialamodes.domain.PositionId;
 import com.issinc.pialamodes.persistence.PositionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,25 +26,16 @@ public class PositionService implements IPositionService {
 
     @Override
     @Transactional
-    public Position create(Position position) {
-        Position result;
+    public Position create(Position pos) {
+        return positionRepo.save(new Position(
+            pos.getHexIdent(), pos.getLat(), pos.getLon(), pos.getHeading(), pos.getGroundSpeed(), pos.getVerticalRate()));
 
-        Position existing = positionRepo.findByPositionId(new PositionId(position.getHexIdent(), position.getTimestamp()));
-        if (existing != null) {
-            log.warn("attempted insert of existing position, hexIdent: " + position.getHexIdent());
-            result = existing;
-        }
-        else {
-            result = positionRepo.save(position);
-        }
-        return result;
     }
 
     @Override
     @Transactional
     public Position create(String hexIdent, Double lat, Double lon, Double heading, Double groundSpeed, Double verticalRate) {
-        return positionRepo.save(
-            new Position(hexIdent, lat, lon, heading, groundSpeed, verticalRate));
+        return positionRepo.save(new Position(hexIdent, lat, lon, heading, groundSpeed, verticalRate));
     }
 
     @Override

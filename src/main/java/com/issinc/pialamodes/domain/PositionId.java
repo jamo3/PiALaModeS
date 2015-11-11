@@ -2,7 +2,6 @@ package com.issinc.pialamodes.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -15,10 +14,8 @@ import java.util.Date;
 @Embeddable
 public class PositionId implements Serializable {
 
-    @Column(name="hexident", nullable=false)
     private String hexIdent;
 
-    @Column(name="timestamp", nullable=false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
 

@@ -37,7 +37,6 @@ public class Position implements Serializable {
     private long version;
 
     protected Position() {    // required for spring jpa
-        super();
     }
 
     public Position(String hexIdent, Double lat, Double lon, Double heading, Double groundSpeed, Double verticalRate) {
@@ -47,6 +46,13 @@ public class Position implements Serializable {
         this.heading = heading;
         this.groundSpeed = groundSpeed;
         this.verticalRate = verticalRate;
+    }
+
+    public PositionId getPositionId() {
+        return positionId;
+    }
+    public void setPositionId(PositionId positionId) {
+        this.positionId = positionId;
     }
 
     public String getHexIdent() {
