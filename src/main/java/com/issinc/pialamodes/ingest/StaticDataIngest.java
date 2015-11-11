@@ -1,9 +1,10 @@
 package com.issinc.pialamodes.ingest;
 
-import static com.jayway.restassured.RestAssured.given;
-
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -50,6 +51,7 @@ public class StaticDataIngest
             String line = null;
             //Skip first line (header info)
             reader.readLine();
+            URL aircraftURL = new URL("http://localhost:8080/aircraft");
             
             
             while ((line = reader.readLine()) != null) 
@@ -62,11 +64,16 @@ public class StaticDataIngest
                     aircraft1.put("tailNumber", "N" + splitLine[0].trim());
                     aircraft1.put("type", mfrCodes.get(splitLine[2]));
                     String jsonString = aircraft1.toString();
-                    given().
-                        contentType("application/json").
-                        body(jsonString).
-                    when().
-                        post("/aircraft");
+                    HttpURLConnection conn = (HttpURLConnection) aircraftURL.openConnection();
+                    conn.setDoOutput(true);
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    OutputStream os = conn.getOutputStream();
+                    os.write(jsonString.getBytes());
+                    os.flush();
+                    conn.getResponseCode();
+                    conn.disconnect();
+                    
                 }
                 catch (JSONException e)
                 {
