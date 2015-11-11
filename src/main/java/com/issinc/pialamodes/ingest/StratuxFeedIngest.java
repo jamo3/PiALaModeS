@@ -1,12 +1,14 @@
 package com.issinc.pialamodes.ingest;
 
-import static com.jayway.restassured.RestAssured.given;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.Socket;
+import java.net.URL;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -34,7 +36,10 @@ public class StratuxFeedIngest
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));)
                 {
             String line;
-
+            
+            URL callSignURL = new URL("http://localhost:8080/callsign");
+            URL positionURL = new URL("http://localhost:8080/position");
+            
             while ((line = in.readLine()) != null)
             {
                 log.info(line);
@@ -51,12 +56,16 @@ public class StratuxFeedIngest
                             callsign.put("hexIdent", id);
                             callsign.put("callsign", lineParts[10]);
                             String jsonString = callsign.toString();
-
-                            given().
-                            contentType("application/json").
-                            body(jsonString).
-                            when().
-                            post("/callsign");
+                            
+                            HttpURLConnection conn = (HttpURLConnection) callSignURL.openConnection();
+                            conn.setDoOutput(true);
+                            conn.setRequestMethod("POST");
+                            conn.setRequestProperty("Content-Type", "application/json");
+                            OutputStream os = conn.getOutputStream();
+                            os.write(jsonString.getBytes());
+                            os.flush();
+                            conn.getResponseCode();
+                            conn.disconnect();
                         }
                         catch (JSONException e)
                         {
@@ -70,17 +79,33 @@ public class StratuxFeedIngest
                         {
                             JSONObject position = new JSONObject();
                             position.put("hexIdent", id);
-                            position.put("lat", Double.valueOf(lineParts[14]));
-                            position.put("lon", Double.valueOf(lineParts[15]));
-                            position.put("heading", Double.valueOf(lineParts[13]));
-                            position.put("groundSpeed", Double.valueOf(lineParts[12]));
+                            if (StringUtils.isNotEmpty(lineParts[14]))
+                            {
+                                position.put("lat", Double.valueOf(lineParts[14]));
+                            }
+                            if (StringUtils.isNotEmpty(lineParts[15]))
+                            {
+                                position.put("lon", Double.valueOf(lineParts[15]));
+                            }
+                            if (StringUtils.isNotEmpty(lineParts[13]))
+                            {
+                                position.put("heading", Double.valueOf(lineParts[13]));
+                            }
+                            if (StringUtils.isNotEmpty(lineParts[12]))
+                            {
+                                position.put("groundSpeed", Double.valueOf(lineParts[12]));
+                            }
                             String jsonString = position.toString();
 
-                            given().
-                            contentType("application/json").
-                            body(jsonString).
-                            when().
-                            post("/position");
+                            HttpURLConnection conn = (HttpURLConnection) positionURL.openConnection();
+                            conn.setDoOutput(true);
+                            conn.setRequestMethod("POST");
+                            conn.setRequestProperty("Content-Type", "application/json");
+                            OutputStream os = conn.getOutputStream();
+                            os.write(jsonString.getBytes());
+                            os.flush();
+                            conn.getResponseCode();
+                            conn.disconnect();
                         }
                         catch (JSONException e)
                         {
@@ -95,15 +120,25 @@ public class StratuxFeedIngest
                         {
                             JSONObject position = new JSONObject();
                             position.put("hexIdent", id);
-                            position.put("lat", Double.valueOf(lineParts[14]));
-                            position.put("lon", Double.valueOf(lineParts[15]));
+                            if (StringUtils.isNotEmpty(lineParts[14]))
+                            {
+                                position.put("lat", Double.valueOf(lineParts[14]));
+                            }
+                            if (StringUtils.isNotEmpty(lineParts[15]))
+                            {
+                                position.put("lon", Double.valueOf(lineParts[15]));
+                            }
                             String jsonString = position.toString();
 
-                            given().
-                            contentType("application/json").
-                            body(jsonString).
-                            when().
-                            post("/position");
+                            HttpURLConnection conn = (HttpURLConnection) positionURL.openConnection();
+                            conn.setDoOutput(true);
+                            conn.setRequestMethod("POST");
+                            conn.setRequestProperty("Content-Type", "application/json");
+                            OutputStream os = conn.getOutputStream();
+                            os.write(jsonString.getBytes());
+                            os.flush();
+                            conn.getResponseCode();
+                            conn.disconnect();
                         }
                         catch (JSONException e)
                         {
@@ -117,16 +152,29 @@ public class StratuxFeedIngest
                         {
                             JSONObject position = new JSONObject();
                             position.put("hexIdent", id);
-                            position.put("heading", Double.valueOf(lineParts[13]));
-                            position.put("groundSpeed", Double.valueOf(lineParts[12]));
-                            position.put("verticalRate", Double.valueOf(lineParts[16]));
+                            if (StringUtils.isNotEmpty(lineParts[13]))
+                            {
+                                position.put("heading", Double.valueOf(lineParts[13]));
+                            }
+                            if (StringUtils.isNotEmpty(lineParts[12]))
+                            {
+                                position.put("groundSpeed", Double.valueOf(lineParts[12]));
+                            }
+                            if (StringUtils.isNotEmpty(lineParts[16]))
+                            {
+                                position.put("verticalRate", Double.valueOf(lineParts[16]));
+                            }
                             String jsonString = position.toString();
 
-                            given().
-                            contentType("application/json").
-                            body(jsonString).
-                            when().
-                            post("/position");
+                            HttpURLConnection conn = (HttpURLConnection) positionURL.openConnection();
+                            conn.setDoOutput(true);
+                            conn.setRequestMethod("POST");
+                            conn.setRequestProperty("Content-Type", "application/json");
+                            OutputStream os = conn.getOutputStream();
+                            os.write(jsonString.getBytes());
+                            os.flush();
+                            conn.getResponseCode();
+                            conn.disconnect();
                         }
                         catch (JSONException e)
                         {
