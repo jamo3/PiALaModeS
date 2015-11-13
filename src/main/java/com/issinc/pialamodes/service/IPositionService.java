@@ -13,5 +13,5 @@ public interface IPositionService {
     Position create(String hexIdent, Double lat, Double lon, Double heading, Double groundSpeed, Double verticalRate);
 
     List<Position> find();
-    List<Position> findLast(String hexIdent, Integer numberOfPositions);
+    List<Position> findLastMinutes(Integer numberOfMinutes);
 }

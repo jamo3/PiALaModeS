@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 
 /**
  *  Created by jay.moss on 11/4/2015.
@@ -46,7 +46,12 @@ public class PositionService implements IPositionService {
 
     @Override
     @Transactional
-    public List<Position> findLast(String hexIdent, Integer numberOfPositions) {
-        return null;
+    public List<Position> findLastMinutes(Integer numberOfMinutes) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));//Munich time
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MINUTE, -numberOfMinutes);
+
+        return positionRepo.findLastMinutes(calendar.getTime());
     }
 }

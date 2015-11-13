@@ -74,7 +74,10 @@ public class PositionServiceTest extends TestCase {
         assertTrue("Should find two object", dbList.size() == 2);
     }
 
-    public void testFindLast() throws Exception {
-
+    @Test
+    public void testFindLastMinutes() throws Exception {
+        List<Position> dbList = service.findLastMinutes(2);
+        assertNotNull("Retrieved Object List should not be null", dbList);
+        assertTrue("Should find two objects ", dbList.size() == 2);
     }
 }

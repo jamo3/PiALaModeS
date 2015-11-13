@@ -55,7 +55,7 @@ public class PositionController {
 
 
 
-    // http get request to find all existing aircraft records
+    // http get request to find all existing position records
     @RequestMapping(method=GET,
         produces=APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Position>> find() {
@@ -64,14 +64,13 @@ public class PositionController {
         return ResponseEntity.ok().body(dbObjs);
     }
 
-    // http get request to find a specific dashboard record
-    @RequestMapping(method=GET, value="/{hexIdent}",
+    // http get request to find recent position
+    @RequestMapping(method=GET, value="/{numMinutes}",
         produces=APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Position>> findById(@PathVariable("hexIdent") String hexIdent) {
+    public ResponseEntity<List<Position>> findLastMinutes(@PathVariable("numMinutes") Integer numMinutes) {
 
-        List<Position> positions = positionService.findLast(hexIdent, 5);
+        List<Position> positions = positionService.findLastMinutes(numMinutes);
         return ResponseEntity.ok().body(positions);
     }
-
 
 }

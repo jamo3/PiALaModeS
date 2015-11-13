@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  *  Created by jay.moss on 10/30/2015.
  */
@@ -18,4 +21,7 @@ public interface PositionRepository extends JpaRepository<Position, PositionId> 
     int deleteByHexIdent(String hexIdent);
 
     Position findByPositionId(PositionId positionId);
+
+    @Query("select pos from Position pos where pos.positionId.timestamp > ?1")
+    List<Position> findLastMinutes(Date endTime);
 }

@@ -21,8 +21,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static com.jayway.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.*;
 
 /**
  *  Created by jay.moss on 11/10/2015.
@@ -58,7 +58,7 @@ public class PositionControllerTest extends TestCase {
     }
 
     @Test
-    public void canCreateUrlEncoded() {
+    public void canCreatePositionUrlEncoded() {
         given().
             parameters(
                 "hexIdent", "abc123",
@@ -86,7 +86,7 @@ public class PositionControllerTest extends TestCase {
     }
 
     @Test
-    public void testCreatePosition() throws Exception {
+    public void testCreatePositionJson() throws Exception {
         JSONObject p003Id = new JSONObject();
         p003Id.put("hexIdent", "abc123");
 
@@ -119,11 +119,24 @@ public class PositionControllerTest extends TestCase {
             );
     }
 
-    public void testFind() throws Exception {
-
+    @Test
+    public void testFindAll() throws Exception {
+        when().
+            get("/position").
+        then().
+            statusCode(HttpStatus.SC_OK).
+            contentType(ContentType.JSON).
+            body("hexIdent", hasItems("abc123"));
     }
 
-    public void testFindById() throws Exception {
+    @Test
+    public void testFindLastMinutes() throws Exception {
+        when().
+            get("/position/2"). // last 2 minutes
+            then().
+            statusCode(HttpStatus.SC_OK).
+            contentType(ContentType.JSON).
+            body("hexIdent", hasItems("abc123"));
 
     }
 }
