@@ -53,8 +53,6 @@ public class PositionController {
         return ResponseEntity.ok().body(dbObj);
     }
 
-
-
     // http get request to find all existing position records
     @RequestMapping(method=GET,
         produces=APPLICATION_JSON_VALUE)

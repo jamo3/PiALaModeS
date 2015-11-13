@@ -22,6 +22,6 @@ public interface PositionRepository extends JpaRepository<Position, PositionId> 
 
     Position findByPositionId(PositionId positionId);
 
-    @Query("select pos from Position pos where pos.positionId.timestamp > ?1")
+    @Query("select pos from Position pos where pos.positionId.timestamp > ?1 order by pos.positionId.timestamp desc")
     List<Position> findLastMinutes(Date endTime);
 }
