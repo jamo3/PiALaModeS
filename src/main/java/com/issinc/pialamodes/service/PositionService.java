@@ -48,10 +48,10 @@ public class PositionService implements IPositionService {
     @Transactional
     public List<Position> findLastMinutes(Integer numberOfMinutes) {
         Calendar calendar = new GregorianCalendar();
-        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));//Munich time
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         calendar.setTime(new Date());
         calendar.add(Calendar.MINUTE, -numberOfMinutes);
 
-        return positionRepo.findLastMinutes(calendar.getTime());
+        return positionRepo.findPositionsAfter(calendar.getTime());
     }
 }
