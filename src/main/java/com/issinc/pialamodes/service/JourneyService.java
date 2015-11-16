@@ -43,7 +43,8 @@ public class JourneyService implements IJourneyService {
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         calendar.setTime(new Date());
         calendar.add(Calendar.MINUTE, -numberOfMinutes);
-        List<Position> positions = positionRepo.findPositionsAfter(calendar.getTime());
+
+        List<Position> positions = positionRepo.findLastMinutesById(hexIdent, calendar.getTime());
 
         return new Journey(aircraft,callsign,positions);
     }
