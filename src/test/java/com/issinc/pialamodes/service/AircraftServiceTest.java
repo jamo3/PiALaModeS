@@ -38,6 +38,16 @@ public class AircraftServiceTest extends TestCase {
     }
 
     @Test
+    public void testCreateDuplicate() throws Exception {
+        Aircraft src = new Aircraft("abc123", "tail-1", "piper-cub");
+        Aircraft ret = service.create(src);
+        assertNotNull("Retrieved Object should not be null", ret);
+        assertEquals("hexIdent should match", src.getHexIdent(), ret.getHexIdent());
+        assertEquals("tailNumber should match", src.getTailNumber(), ret.getTailNumber());
+        assertEquals("type should match", src.getType(), ret.getType());
+    }
+
+    @Test
     public void testCreate() throws Exception {
         Aircraft src = new Aircraft("def456", "tail-2", "piper-bear");
         Aircraft ret = service.create(src);
@@ -59,10 +69,28 @@ public class AircraftServiceTest extends TestCase {
     }
 
     @Test
-    public void testFind() throws Exception {
+    public void testCreateDuplicate1() throws Exception {
+        Aircraft ret = service.create("abc123", "tail-1", "piper-cub");
+        assertNotNull("Retrieved Object should not be null", ret);
+        assertEquals("hexIdent should match", "abc123", ret.getHexIdent());
+        assertEquals("tailNumber should match", "tail-1", ret.getTailNumber());
+        assertEquals("type should match", "piper-cub", ret.getType());
+    }
+
+    @Test
+    public void testFindAll() throws Exception {
         List<Aircraft> dbList = service.find();
         assertNotNull("Retrieved Object List should not be null", dbList);
         assertTrue("Should find one object", dbList.size() == 1);
+    }
+
+    @Test
+    public void testFindById() throws Exception {
+        Aircraft ret = service.findByHexIdent("abc123");
+        assertNotNull("Retrieved Object should not be null", ret);
+        assertEquals("hexIdent should match", "abc123", ret.getHexIdent());
+        assertEquals("tailNumber should match", "tail-1", ret.getTailNumber());
+        assertEquals("type should match", "piper-cub", ret.getType());
     }
 
     @Test

@@ -38,6 +38,12 @@ public class CallsignServiceTest extends TestCase {
     }
 
     @Test
+    public void testCreateDuplicateObj() throws Exception {
+        Callsign src = new Callsign("abc123", "whiskey-100");
+        Callsign ret = service.create(src);
+    }
+
+    @Test
     public void testCreateObj() throws Exception {
         Callsign src = new Callsign("def456", "tail-2");
         Callsign ret = service.create(src);
