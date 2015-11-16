@@ -12,7 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
 
 /**
  *  Created by jay.moss on 11/13/2015.
@@ -39,32 +42,26 @@ public class JourneyService implements IJourneyService {
         Aircraft aircraft = aircraftRepo.findOne(hexIdent);
         Callsign callsign = callsignRepo.findOne(hexIdent);
 
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-        calendar.setTime(new Date());
-        calendar.add(Calendar.MINUTE, -numberOfMinutes);
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.add(Calendar.MINUTE, -numberOfMinutes);
 
-        List<Position> positions = positionRepo.findLastMinutesById(hexIdent, calendar.getTime());
+        List<Position> positions = positionRepo.findLastMinutesById(hexIdent, cal.getTime());
 
         return new Journey(aircraft,callsign,positions);
     }
 
     @Override
     public List<String> findIdsForLastMinutes(Integer numberOfMinutes) {
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-        calendar.setTime(new Date());
-        calendar.add(Calendar.MINUTE, -numberOfMinutes);
-        return positionRepo.findIdsAfter(calendar.getTime());
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.add(Calendar.MINUTE, -numberOfMinutes);
+        return positionRepo.findIdsAfter(cal.getTime());
     }
 
     @Override
     public List<Journey> findAll(Integer numberOfMinutes) {
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-        calendar.setTime(new Date());
-        calendar.add(Calendar.MINUTE, -numberOfMinutes);
-        List<String> hexIdentList = positionRepo.findIdsAfter(calendar.getTime());
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.add(Calendar.MINUTE, -numberOfMinutes);
+        List<String> hexIdentList = positionRepo.findIdsAfter(cal.getTime());
 
         List<Journey> journeyList = new ArrayList<>();
         for (String hexIdent : hexIdentList) {

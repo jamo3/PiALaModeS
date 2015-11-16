@@ -6,7 +6,9 @@ import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  *  Created by jay.moss on 11/4/2015.
@@ -24,7 +26,8 @@ public class PositionId implements Serializable {
 
     public PositionId(String hexIdent) {
         this.hexIdent = hexIdent;
-        this.timestamp = new Date();
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        this.timestamp = cal.getTime(); //new Date();
     }
 
     public PositionId(String hexIdent, Date timestamp) {

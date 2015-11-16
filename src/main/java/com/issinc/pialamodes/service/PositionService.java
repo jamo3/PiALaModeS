@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
 
 /**
  *  Created by jay.moss on 11/4/2015.
@@ -47,11 +49,9 @@ public class PositionService implements IPositionService {
     @Override
     @Transactional
     public List<Position> findLastMinutes(Integer numberOfMinutes) {
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-        calendar.setTime(new Date());
-        calendar.add(Calendar.MINUTE, -numberOfMinutes);
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.add(Calendar.MINUTE, -numberOfMinutes);
 
-        return positionRepo.findPositionsAfter(calendar.getTime());
+        return positionRepo.findPositionsAfter(cal.getTime());
     }
 }
