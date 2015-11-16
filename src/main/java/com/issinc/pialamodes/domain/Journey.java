@@ -21,11 +21,21 @@ public class Journey implements Serializable {
     protected Journey() {
     }
     public Journey (Aircraft aircraft, Callsign callsign, List<Position> positions) {
-        this.hexIdent = aircraft.getHexIdent();
-        this.callsign = callsign.getCallsign();
-        this.tailNumber = aircraft.getTailNumber();
-        this.type = aircraft.getType();
-        this.positions = positions;
+        if( null != aircraft){
+            this.hexIdent = aircraft.getHexIdent();
+            this.tailNumber = aircraft.getTailNumber();
+            this.type = aircraft.getType();
+        }
+        if( null != callsign){
+            this.callsign = callsign.getCallsign();
+            this.hexIdent = callsign.getHexIdent(); //in case aircraft was null
+        }
+        if(null != positions ){
+            this.positions = positions;
+            if( null == hexIdent && !positions.isEmpty()){
+                this.hexIdent = positions.get(0).getHexIdent();
+            }
+        }
     }
 
     public Journey(String hexIdent) {
